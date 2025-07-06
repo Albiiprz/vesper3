@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Carta para Albert</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <style>
+    body {
+      margin: 0;
+      background: url('https://i.imgur.com/ggXm9IE.jpeg') no-repeat top center;
+      background-size: cover;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8rem;
+      line-height: 1.8;
+      color: #2d160a;
+      overflow-x: hidden;
+    }
+
+    .bienvenida {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .bienvenida input, .bienvenida button {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8rem;
+      padding: 10px 20px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .bienvenida input {
+      background: #fff;
+      color: #2d160a;
+    }
+
+    .bienvenida button {
+      background: #f3e3c3;
+      color: #2d160a;
+      cursor: pointer;
+    }
+
+    .texto {
+      max-width: 800px;
+      padding: 80px 60px;
+      margin: 0 auto;
+      white-space: pre-wrap;
+      display: none;
+    }
+
+    .texto span {
+      opacity: 0;
+      animation: aparecer 3.24s forwards;
+      text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25);
+    }
+
+    @keyframes aparecer {
+      to {
+        opacity: 1;
+      }
+    }
+
+    iframe {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla con contraseña -->
+  <div class="bienvenida" id="pantallaInicio">
+    <h1>Introduce la contraseña para leer la carta</h1>
+    <input type="password" id="clave" placeholder="Contraseña...">
+    <button onclick="validarAcceso()">Aceptar</button>
+  </div>
+
+  <!-- Contenedor del reproductor -->
+  <div id="playerContainer"></div>
+
+  <!-- Carta -->
+  <div class="texto" id="texto"></div>
+
+  <script>
+    const contenido = `Albert,
+
+
+Solo quería decirte gracias.
+
+
+Sé que si no hubieras estado ese día, cuando me ayudaste con la pierna, no estaría escribiendo esto.
+
+
+Me salvaste la vida. Así, en pocas palabras.
+
+
+Aunque no haya sido por mucho tiempo, aunque las cosas hayan terminado así, me hiciste ver que todavía hay gente buena en el mundo.
+
+
+Te tengo mucho cariño, Albert. Muchísimo. Eres genial, aunque a veces no te lo digan lo suficiente.
+
+
+En estos últimos días ha pasado de todo, tantas cosas que ni te las imaginas. Dile a Thor que te cuente. Que te diga cómo fue todo, cómo sentí lo que era querer a alguien y lo tonta que llegué a ser por eso. Cómo metí la pata hasta el fondo.
+
+
+Y cuánto os voy a echar de menos ahora que ya no estoy con vosotros.
+
+
+No tengo ninguna duda de que vas a ser un gran medimago. El mejor. Cuida de Thor como lo has hecho hasta ahora. No dejes que se hunda. Sé el amigo que necesita cerca, aunque ya lo eres, lo sé.
+
+
+Me alegro muchísimo de haberte conocido.
+
+
+Y si algún día piensas en mí, solo quiero que recuerdes esto:
+
+
+Gracias a ti, una parte de mí sí quiso seguir viva.
+
+—Vesper`;
+
+    let player;
+
+    function validarAcceso() {
+      const clave = document.getElementById("clave").value.trim().toLowerCase();
+      if (clave === "amigo") {
+        iniciarCarta();
+      } else {
+        alert("Contraseña incorrecta. Intenta otra vez.");
+      }
+    }
+
+    function iniciarCarta() {
+      document.getElementById('pantallaInicio').style.display = 'none';
+      const texto = document.getElementById("texto");
+      texto.style.display = "block";
+
+      [...contenido].forEach((letra, i) => {
+        const span = document.createElement("span");
+        span.textContent = letra;
+        span.style.animationDelay = `${i * 0.11}s`;
+        texto.appendChild(span);
+      });
+
+      if (player) {
+        player.unMute();
+        player.setVolume(100);
+        player.playVideo();
+      }
+    }
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('playerContainer', {
+        height: '0',
+        width: '0',
+        videoId: 'S1DfFP1Qcpg',
+        playerVars: {
+          autoplay: 0,
+          loop: 1,
+          playlist: 'S1DfFP1Qcpg',
+          controls: 0,
+          modestbranding: 1
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
